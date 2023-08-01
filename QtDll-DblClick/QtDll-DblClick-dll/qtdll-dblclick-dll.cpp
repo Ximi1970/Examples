@@ -7,8 +7,10 @@
 
 
 HHOOK hook = 0;
+HHOOK hook2 = 0;
 bool quit = false;
 LRESULT CALLBACK ClickProc( int disabled, WPARAM wparam, LPARAM lparam );
+LRESULT CALLBACK CbtProc( int nCode, WPARAM wparam, LPARAM lparam );
 HMODULE modcpy;
 
 
@@ -35,6 +37,9 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 QTDLL_DBLCLICK_DLL_EXPORT void Setup()
 {
     hook = SetWindowsHookExA( WH_MOUSE, ClickProc, modcpy, 0 );
+
+    hook2 = SetWindowsHookExA( WH_CBT, CbtProc, modcpy, 0 );
+
     MSG msg;
 
     Beep( 660, 100 );
@@ -57,17 +62,34 @@ QTDLL_DBLCLICK_DLL_EXPORT void Setup()
     */
 }
 
-LRESULT CALLBACK ClickProc( int disabled, WPARAM wparam, LPARAM lparam )
+LRESULT CALLBACK ClickProc( int disabled, WPARAM wParam, LPARAM lParam )
 {
-    MOUSEHOOKSTRUCT* pMouseStruct = (MOUSEHOOKSTRUCT*)lparam;
+    MOUSEHOOKSTRUCT* pMouseStruct = (MOUSEHOOKSTRUCT*)lParam;
 
     if( pMouseStruct != NULL )
     {
-        if(  wparam == WM_LBUTTONDBLCLK || wparam == WM_NCLBUTTONDBLCLK )
+        if(  wParam == WM_LBUTTONDBLCLK || wParam == WM_NCLBUTTONDBLCLK )
         {
             Beep( 550, 100 );
         }
     }
 
-    return CallNextHookEx( hook, 0, wparam, lparam );
+    return CallNextHookEx( hook, 0, wParam, lParam );
+}
+
+LRESULT CALLBACK CbtProc( int nCode, WPARAM wParam, LPARAM lParam )
+{
+    if( nCode == HCBT_SYSCOMMAND )
+    {
+        switch( wParam )
+        {
+            case SC_MINIMIZE:
+            case SC_MAXIMIZE:
+                return 1;
+            default:
+                break;
+        }
+    }
+
+    return CallNextHookEx( NULL, nCode, wParam, lParam );
 }
