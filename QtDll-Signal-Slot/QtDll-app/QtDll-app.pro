@@ -10,9 +10,7 @@ include( ../QtDll.pri )
 #
 # Set the Qt modules
 #
-QT += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui widgets
 
 #
 # Define the target

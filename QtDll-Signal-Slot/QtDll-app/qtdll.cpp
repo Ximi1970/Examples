@@ -9,6 +9,7 @@
  *	Qt includes
  */
 #include <QWindow>
+#include <QTimer>
 #include <QMessageBox>
 
 /*
@@ -21,6 +22,8 @@ QtDll::QtDll( QWindow *parent ) : QWindow( parent )
     connect( this, &QtDll::QtDllSignal, m_dll, &QtDllDll::QtDllDllSlot );
     connect( m_dll, &QtDllDll::QtDllDllSignal, this, &QtDll::QtDllSlot );
 
+    QTimer::singleShot( 2000, this, &QtDll::TimerSlot );
+
     show();
 }
 
@@ -29,7 +32,14 @@ QtDll::~QtDll()
     delete m_dll;
 }
 
+void QtDll::TimerSlot()
+{
+    QMessageBox::information( NULL, "QtDll", "Timeout", QMessageBox::Ok );
+
+    emit QtDllSignal();
+}
+
 void QtDll::QtDllSlot()
 {
-    QMessageBox::information( NULL, "QtDll", "Signal received by QtDll", QMessageBox::Ok );
+    QMessageBox::information( NULL, "QtDll", "Signal received in QtDll", QMessageBox::Ok );
 }
