@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>files/icons/Icon.png</file>
+        <file>files/icons/Icon.ico</file>
+        <file>languages/Lang.en-US.ts</file>
+    </qresource>
+</RCC>
