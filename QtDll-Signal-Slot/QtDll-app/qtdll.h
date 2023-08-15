@@ -38,6 +38,14 @@ class QtDll : public QWindow
 
     public slots:
 
+        /**
+         * @brief TimerSlot. Slot for the timer.
+         */
+        void TimerSlot();
+
+        /**
+         * @brief QtDllSlot. Test slot.
+         */
         void QtDllSlot();
 
     private:

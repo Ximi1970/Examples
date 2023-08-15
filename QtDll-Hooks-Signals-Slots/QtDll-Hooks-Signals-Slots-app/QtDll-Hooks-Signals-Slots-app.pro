@@ -1,7 +1,7 @@
 #
 #   Get the defaults
 #
-include( ../QtDll.pri )
+include( ../QtDll-Hooks-Signals-Slots.pri )
 
 #
 #   Defines
@@ -10,19 +10,21 @@ include( ../QtDll.pri )
 #
 # Set the Qt modules
 #
-QT += core gui widgets
+QT += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 #
 # Define the target
 #
-TARGET = QtDll
+TARGET = QtDll-Hooks-Signals-Slots
 TEMPLATE = app
 
 #
 #  Translations
 #
 TRANSLATIONS = \
-    languages/$${TARGET}.en-US.ts
+    languages/QtDll.en-US.ts
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -38,8 +40,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 #CONFIG += staticlib
 
-INCLUDEPATH += $$PWD/../QtDll-dll
-DEPENDPATH += $$PWD/../QtDll-dll
+INCLUDEPATH += $$PWD/../QtDll-Hooks-dll
+DEPENDPATH += $$PWD/../QtDll-Hooks-dll
+
+INCLUDEPATH += $$PWD/../QtDll-Signals-Slots-dll
+DEPENDPATH += $$PWD/../QtDll-Signals-Slots-dll
 
 #
 #   System dependency
@@ -55,11 +60,13 @@ win32: {
     }
 
     CONFIG(debug, debug|release) {
-        LIBS += -L$$OUT_PWD/../QtDll-dll/debug/ -lQtDll-dll
+        LIBS += -L$$OUT_PWD/../QtDll-Hooks-dll/debug/ -lQtDll-Hooks
+        LIBS += -L$$OUT_PWD/../QtDll-Signals-Slots-dll/debug/ -lQtDll-Signals-Slots
 
         QMAKE_POST_LINK = $$[QT_INSTALL_BINS]\windeployqt.exe \"$$shell_path($${OUT_PWD}/debug/$${TARGET}.exe)\" &
     } else {
-        LIBS += -L$$OUT_PWD/../QtDll-dll/release/ -lQtDll-dll
+        LIBS += -L$$OUT_PWD/../QtDll-Hooks-dll/release/ -lQtDll-Hooks
+        LIBS += -L$$OUT_PWD/../QtDll-Signals-Slots-dll/release/ -lQtDll-Signals-Slots
 
         QMAKE_POST_LINK = $$[QT_INSTALL_BINS]\windeployqt.exe \"$$shell_path($${OUT_PWD}/release/$${TARGET}.exe)\" &
     }
@@ -73,10 +80,10 @@ win32: {
 
 SOURCES += \
         main.cpp \
-        qtdll.cpp
+        qtdll-hooks-signals-slots.cpp
 
 HEADERS += \
-        qtdll.h
+        qtdll-hooks-signals-slots.h
 
 FORMS +=
 
@@ -85,9 +92,9 @@ FORMS +=
 
 
 RESOURCES += \
-        QtDll.qrc
+        QtDll-Hooks-Signals-Slots.qrc
 
 win32:RC_FILE += \
-        QtDll.rc
+        QtDll-Hooks-Signals-Slots.rc
 
 DISTFILES +=
