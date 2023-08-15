@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>files/icons/QtDll.png</file>
-        <file>files/icons/QtDll.ico</file>
-        <file>languages/QtDll.en-US.ts</file>
-    </qresource>
-</RCC>
